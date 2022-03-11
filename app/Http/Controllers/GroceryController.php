@@ -2,10 +2,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\controller;
+// use App\Http\Controllers\controller;
 use App\models\Category;
 use App\Models\Grocery;
+
 
 
 class GroceryController extends Controller
@@ -16,12 +16,10 @@ class GroceryController extends Controller
         return view('index',['grocery'=>$grocery]);
     }
 
-    // TODO: functienamen camelCase
-    // TODO: beperk constroller methods tot standaard CRUD methods, dus in dit geval houd je het bij edit voor deze route
-    public function ChangeIndex()
+    public function edit()
     {
         $grocery = Grocery::all()->load('category');
-        return view('grocery_edit',['grocery'=>$grocery]);
+        return view::make('grocery.edit')->with('grocery', $grocery);
     }
 
     // TODO: pas route model binding toe voor compactere code
@@ -29,12 +27,11 @@ class GroceryController extends Controller
     {
         $categories = Category::all();
         $grocery = Grocery::findOrFail($id);
-        return view('grocery_update',['grocery'=> $grocery], ["categories"=>$categories] );
+        return view('grocery.show',['grocery'=> $grocery], ["categories"=>$categories] );
     }
 
-    // TODO: onderstaande inhoud hoort niet bij een edit method maar update method (edit method laad alleen de edit view, update method volgt na het posten van
-    // de form in de edit view)
-    public function edit(Request $request,$id)
+    
+    public function update(Request $request,$id)
     {
         // TODO: maak een aparte form validator class aan zodat je dezelfde validatie op meerdere plekken (zoals de store method) kunt gebruiken
         request()->validate([
@@ -44,33 +41,31 @@ class GroceryController extends Controller
             "category" => ["required", "integer", "gt:0"]
         ]);
 
-        $name = $request->input('name');
-        $price = $request->input('price');
-        $number = $request->input('number');
-        $subtotal = $number * $price;
-        $category = $request->input('category');
+        $grocery = Grocery::find($id);
 
+        $grocery->name = $request->input('name');
+        $grocery->price = $request->input('price');
+        $grocery->number = $request->input('number');
+        $grocery->subtotal = $grocery->number * $grocery->price;
+        $grocery->category = $request->input('category');
 
-        // TODO: gebruik eloquent ipv eigen geschreven queries voor eenvoudige zaken als het updaten. Je kunt mass-assignment toepassen door een array van waarden
-        // uit de validatie mee te geven aan de update method
-        DB::update('update groceries set name = ?,price=?,number=?,subtotal=?,caregory_id=? where id = ?',[$name,$price,$number,$subtotal,$category,$id]);
-        // TODO: return een redirect naar de overzichtspagina na een bijwerk-aktie
-        echo "Record updated successfully.";
-        echo '<a href = "/groceries">Click Here</a> to go back.';
+        return redirect("/grocery");
+        
     }
 
 
     public function destroy($id)
     {
-        // TODO: gebruik eloquent ipv eigen geschreven queries
-        DB::delete('delete from groceries where id = ?',[$id]);
-        // TODO: return een redirect naar de overzichtspagina
-        echo "Record deleted successfully.";
-        echo '<a href = "/groceries">Click Here</a> to go back.';
+
+        $grocery = Grocery::find($id);
+        $grocery->delete();
+
+        return redirect("/grocery");
+        
     }
 
-    // TODO: gebruik liever geen eigen method names maar alleen CRUD names
-    public function insertform(){
+    
+    public function create(){
         $categories = Category::all();
         return view("create",["categories"=>$categories]);
 
@@ -79,27 +74,27 @@ class GroceryController extends Controller
 
     public function store(Request $request){
 
-        request()->validate([
+        $request->validate([
             "name" => ["required", "min:2"],
             "price" => ["required", "numeric", "gt:0"],
             "number" => ["required", "integer", "gt:0"],
             "category" => ["required", "integer", "gt:0"]
         ]);
-        $name = $request->input('name');
-        $price = $request->input('price');
-        $number = $request->input('number');
-        $subtotal = $number * $price;
-        $category = $request->input('category');
+        $data = $request->all();
 
 
-        // TODO: gebruik eloquent ipv eigen geschreven queries
-        $data=array('name'=>$name,"price"=>$price,"number"=>$number, "subtotal"=>$subtotal, "category_id"=>$category);
-        DB::table('groceries')->insert($data);
+        
 
-        // TODO: return een redirect naar de overzichtspagina na een store-aktie
-        echo "Record inserted successfully.<br/>";
-        echo '<a href = "/groceries">Click Here</a> to go back.';
+        $grocery = Grocery::create([
+            'name' => $data['name'],
+            'price' => $data['price'],
+            'number' => $data['number'],
+            'subtotal' => $data['pirce'] * $data['number'],
+            'category_id' => $data['category'],
+        ]);
 
+        return redirect("/grocery");
+        
 
     }
 

@@ -15,8 +15,8 @@ class CreateCategoryTable extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('category_name')->unique();          // TODO: hernoemen naar "name", want table naam geeft al aan dat het om een category gaat
-        });
+            $table->string('name')->unique();
+        });          
     }
 
     /**

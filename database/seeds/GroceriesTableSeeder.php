@@ -13,39 +13,39 @@ class GroceriesTableSeeder extends Seeder
     public function run()
     {
         DB::table("categories")->insert([
-            "category_name" => "Bakery"
+            "name" => "Bakery"
         ]);
 
         DB::table("categories")->insert([
-            "category_name" => "Beverages"
+            "name" => "Beverages"
         ]);
 
         DB::table("categories")->insert([
-            "category_name" => "Canned goods"
+            "name" => "Canned goods"
         ]);
 
         DB::table("categories")->insert([
-            "category_name" => "Dairy"
+            "name" => "Dairy"
         ]);
 
         DB::table("categories")->insert([
-            "category_name" => "Dry/baking goods"
+            "name" => "Dry/baking goods"
         ]);
 
         DB::table("categories")->insert([
-            "category_name" => "Frozen foods"
+            "name" => "Frozen foods"
         ]);
 
         DB::table("categories")->insert([
-            "category_name" => "Meat"
+            "name" => "Meat"
         ]);
 
         DB::table("categories")->insert([
-            "category_name" => "Produce"
+            "name" => "Produce"
         ]);
 
         DB::table("categories")->insert([
-            "category_name" => "Other"
+            "name" => "Other"
         ]);
     }
 }

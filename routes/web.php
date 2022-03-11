@@ -24,27 +24,10 @@ Route::get('/', function () {
 
 
 
-// TODO: gebruik een resource route zodat alle CRUD routes automatisch gemaakt worden voor kortere code en minder werk
-
-Route::get('/groceries', [GroceryController::class, 'index']);
 
 
-Route::get('/groceries/create', [GroceryController::class, 'insertform']);
+Route::resource('groceries', 'GroceryController');
 
-
-Route::post('/groceries/save', [GroceryController::class, 'store']);
-
-
-Route::get('/groceries/delete/{id}', [GroceryController::class, 'destroy']);
-
-
-Route::get('/groceries/edit', [GroceryController::class, 'ChangeIndex']);
-
-
-Route::get('/groceries/edit/{id}', [GroceryController::class, 'show']);
-
-
-Route::post('/groceries/edit/{id}', [GroceryController::class, 'edit']);
 
 
 
