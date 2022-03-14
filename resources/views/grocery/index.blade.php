@@ -9,6 +9,7 @@
         <th scope="col">Aantal</th>
         <th scope="col">Category</th>
         <th scope="col">Subtotaal</th>
+        <th scope="col">Edit</th>
     </tr>
     
     <?php foreach ($grocery as $product) : ?>
@@ -19,6 +20,7 @@
         <td><?= $product->number; ?></td>
         <td><?= $product->category->category_name; ?></td>
         <td class="productTotalCost" ><?= $product->subtotal;?></td>
+        <td><a href = 'groceries/{{$product->id}}'>edit</a></td>
         
 
         <?php $totaal_prijs += $product->subtotal;?>

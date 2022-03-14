@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
+use Illuminate\Database\Eloquent\Model;
 
 class Grocery extends Model
 {
-    // use Hasfactory;
+    use HasFactory;
 
-    protected $gaurded = [];
+    protected $fillable = ["name", "price", "number", "subtotal", "category_id"];
+
+    public $timestamps = false;
 
     public function category()
     {
